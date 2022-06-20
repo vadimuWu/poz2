@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:insert="blocks/blocks.html :: meta"></th:block>
+    <th:block th:insert="blocks/blocks.html :: styles"></th:block>
+    <title>User page</title>
+</head>
+<body>
+<nav class="navbar sticky-top navbar-dark bg-dark">
+    <div class="container-fluid">
+        <div class="navbar-brand"><b th:text="${user.getEmail()}">email</b> with roles: <b th:text="${user.getRoleString()}">roles</b></div>
+        <div  class="text-end"><a href="/logout">Logout</a> </div>
+    </div>
+</nav>
+
+<div class="container-fluid">&nbsp;</div>
+
+<div class="row">
+    <div class="col-sm-3">
+        <!---nav ---->
+        <div class="nav flex-column nav-pills me-3">
+
+            <!--
+            <a class="active" th:if="${route == 'users'}">Список</a>
+            <a href="/admin/users" th:unless="${route == 'users'}">Список</a>
+            -->
+            <a th:each="role : ${user.getRoles()}" th:text="${role.getName().substring(5).toLowerCase()}"
+               th:href="@{/{r}(r=${role.getName().substring(5).toLowerCase()})}"
+               th:class="'nav-link ' + ( (${role.getName()} == 'ROLE_USER')? 'active' : '')">Home</a>
+        </div>
+    </div>
+    <div class="col-sm-9">
+        <!---content ---->
+
+        <h1>User information-page</h1>
+
+
+                <p class="h4">All users</p>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>name</th>
+                        <th>surname</th>
+                        <th>age</th>
+                        <th>email</th>
+                        <th>Роли</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td th:text="${user.getId()}"></td>
+                        <td th:text="${user.getUsername()}"></td>
+                        <td th:text="${user.getSurname()}"></td>
+                        <td th:text="${user.getAge()}"></td>
+                        <td th:text="${user.getEmail()}"></td>
+                        <td th:text="${user.getRoleString()}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+</body>
+</html>
